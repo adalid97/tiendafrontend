@@ -1,13 +1,12 @@
-# Svelte - Mini tutorial
+# FRONTEND (con Svelte)
 
 > **ESTE MINITUTORIAL ES UNA VERSIÓN RESUMIDA DEL FRONTEND DE ESTA APLICACIÓN**
 > 
-> A tener muy en cuenta:
+> A tener en cuenta:
 >
-> - Este minitutorial aún está en elaboración. La aplicación también.
-> - No se explica la parte backend, sólo la parte frontend.
 > - Mucho del código que aparece en este minitutorial está simplificado con fines didácticos.
 > - Para ver todo el código, revisar el código fuente de este repositorio.
+> - **La parte backend de esta aplicación puede verse en [tiendabackend](https://github.com/jamj2000/tiendabackend)**
 
 
 ## Introducción
@@ -551,8 +550,6 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
 
 ```html
 <script>
-  import Boton from "./Boton.svelte";
-  
   export let articulo = {};
 </script>
 
@@ -561,7 +558,7 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
   /* Consultar el código fuente */
 </style>
 
-<div class="card" on:click>
+<div class="card">
   <input bind:value={articulo.nombre} class="title" />
   <input
     type="number"
@@ -579,8 +576,6 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
 
 ```html
 <script>
-  import Boton from "./Boton.svelte";
-  
   export let cliente = {};
 </script>
 
@@ -589,7 +584,7 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
   /* Consultar el código fuente */
 </style>
 
-<div class="card" on:click>
+<div class="card">
   <input bind:value={cliente.nombre} class="title" />
   <input bind:value={cliente.apellidos} class="title" />
   <slot />
@@ -607,8 +602,8 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
   import { onMount, getContext } from "svelte";
   import { jsonData }            from "./store.js";
 
-  export let tipo = "insertar"; // insertar, modificar, eliminar
-  export let coleccion = "articulos"; // articulos, clientes
+  export let tipo = "insertar";        // insertar, modificar, eliminar
+  export let coleccion = "articulos";  // articulos, clientes
   export let documento = {};
   
  
@@ -691,7 +686,7 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
 
 ## Comunicación entre componentes
 
-Existen 3 métodos:
+Existen 3 mecanismos:
 
 - Propiedades
 - Contextos
@@ -864,7 +859,7 @@ Para crear una versión optimizada de la aplicación, ejecutamos:
 npm run build
 ```
 
-Puedes ejecutar la aplicación recién creada con `npm run start`. Esto utiliza [sirv] (https://github.com/lukeed/sirv), que se incluye en las `dependencias` de `package.json` para que la aplicación funcione cuando se implemente en plataformas como [Heroku] (https://heroku.com).
+Puedes ejecutar la aplicación recién creada con `npm run start`. Esto utiliza [sirv](https://github.com/lukeed/sirv), que se incluye en las `dependencias` de `package.json` para que la aplicación funcione cuando se implemente en plataformas como [Heroku](https://heroku.com).
 
 
 ## Single-Page App
@@ -890,31 +885,29 @@ Este frontend no contiene código de servidor, es decir, no contiene código par
 Existen muchos sitios que ofrecen esta opción, Por ejemplo:
 
 - GitHub Pages
-- Nelify
-- Now (de [Zeit.co](https://zeit.co) )
+- Netlify
+- Vercel
 - Surge
 
 Para desarrolladores con poca experiencia, la forma más sencilla de despliegue es utilizar la interfaz web que proporcionan dichos sitios. 
 
-Pero si deseas realizar el despliegue mediante interfaz de texto, a continuación se muestra un resumen de cómo se realizaría con Now y con Surge.
+Pero si deseas realizar el despliegue mediante interfaz de texto, a continuación se muestra un resumen de cómo se realizaría con Vercel y con Surge.
 
 
-**Con [now](https://zeit.co/now)**
+**Con [vercel](https://vercel.com)**
 
-Instala `now` si aún no lo has hecho:
+Instala `vercel` si aún no lo has hecho:
 
 ```bash
-npm install -g now
+sudo  npm install -g vercel
 ```
 
 Luego, desde la carpeta de tu proyecto:
 
 ```bash
-cd  public
-now  deploy  --name my-project
+vercel login
+vercel --prod
 ```
-
-> NOTA: Sustituye *my-project* por el nombre de tu proyecto.
 
 
 **Con [surge](https://surge.sh/)**
@@ -922,7 +915,7 @@ now  deploy  --name my-project
 Instala `surge` si aún no lo has hecho:
 
 ```bash
-npm install -g surge
+sudo  npm install -g surge
 ```
 
 Luego, desde la carpeta de tu proyecto:
@@ -969,6 +962,8 @@ Los archivos necesarios para hacer que una aplicación web sea progresiva son:
 - `public/service-worker.js`   
 
 Tanto el archivo `manifest.json` como la carpeta `images` y todos sus iconos, podemos generarlos de manera sencilla con [Web App Manifest Generator](https://app-manifest.firebaseapp.com/).
+
+![App Manifest Generator](app-manifest-generator.png)
 
 El archivo `service-worker.js` se encarga de funcionar como intermediario entre nuestro frontend y el backend, y tiene la siguiente apariencia:
 
@@ -1058,9 +1053,11 @@ Además de todo lo anterior, deberemos modificar el archivo **`index.html`** par
 
 Lo que hacemos es **añadir un enlace al archivo `manifest.json`** e indicar los iconos y colores que usaremos.
 
+Además en el `body` de la página, registramos el `service-worker.js` y lo cargamos.
+
 El código fuente completo puede verse en [public/index.html](./public/index.html)
 
-Por último, es recomendable tener un archivo llamado `*offline.html*` o similar, que mostraremos cuando no haya conexión. 
+Por último, es recomendable tener un archivo llamado *`offline.html`* o similar, que mostraremos cuando no haya conexión. 
 
 ```html
 <!DOCTYPE html>
